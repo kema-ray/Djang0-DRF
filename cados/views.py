@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .models import *
+from .serializers import *
 
 # Create your views here.
 @api_view(['GET'])
@@ -12,12 +14,15 @@ def endpoints(request):
 
 @api_view(['GET'])
 def advocate_list(request):
-        data = ['Dennis','Rachel','Betty']
-        return Response(data)
+        advocates = Advocate.objects.all()
+        serializer = AdvocateSerializer(advocates, many=True)
+        return Response(serializer.data)
         # return JsonResponse(data, safe=False)
 
 @api_view(['GET'])
 def advocate_detail(request, username):
-        data = username
-        return Response(data)
+        # data = username
+        advocate = Advocate.objects.get(username=username)
+        serializer = AdvocateSerializer(advocate, many=False)
+        return Response(serializer.data)
         # return JsonResponse(data, safe=False)
