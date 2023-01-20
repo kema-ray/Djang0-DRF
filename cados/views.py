@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 # Create your views here.
 @api_view(['GET'])
 def endpoints(request):
-        data = ['/advocates/', 'advocates/:username']
+        data = ['/advocates/', 'advocates/:username', '/companies/']
         return Response(data)
         # return JsonResponse(data, safe=False)
 
@@ -86,3 +86,9 @@ class AdvocateDetail(APIView):
 #         if request.method == 'DELETE':
 #                 advocate.delete()
 #                 return Response("user was deleted")
+
+@api_view(['GET'])
+def company_list(request):
+        companies = Company.objects.all()
+        serializer = CompanySerializer(companies, many=True)
+        return Response(serializer.data)
