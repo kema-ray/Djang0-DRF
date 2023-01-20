@@ -15,14 +15,16 @@ def endpoints(request):
 
 @api_view(['GET'])
 def advocate_list(request):
-        query = request.GET.get('query')
+        # Handles GET requests
+        if request.method == 'GET':
+                query = request.GET.get('query')
 
-        if query == None:
-                query = ''
+                if query == None:
+                        query = ''
 
-        advocates = Advocate.objects.filter(Q(username__icontains = query) | Q(bio__icontains = query))
-        serializer = AdvocateSerializer(advocates, many=True)
-        return Response(serializer.data)
+                advocates = Advocate.objects.filter(Q(username__icontains = query) | Q(bio__icontains = query))
+                serializer = AdvocateSerializer(advocates, many=True)
+                return Response(serializer.data)
         # return JsonResponse(data, safe=False)
 
 @api_view(['GET'])
